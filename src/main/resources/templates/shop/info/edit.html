@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改书籍信息')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-info-edit" th:object="${bookInfo}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">书名：</label>
+            <div class="col-sm-8">
+                <input name="bookName" th:field="*{bookName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">作者名：</label>
+            <div class="col-sm-8">
+                <input name="author" th:field="*{author}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">书籍类型：</label>
+            <div class="col-sm-8">
+                <select name="bookType" class="form-control m-b" th:with="type=${@dict.getType('shop_book_type')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{bookType}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">价格：</label>
+            <div class="col-sm-8">
+                <input name="price" th:field="*{price}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">出版号：</label>
+            <div class="col-sm-8">
+                <input name="publishingCode" th:field="*{publishingCode}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-8">
+                <div class="radio-box" th:each="dict : ${@dict.getType('shop_book_state')}">
+                    <input type="radio" th:id="${'status_' + dict.dictCode}" name="status" th:value="${dict.dictValue}" th:field="*{status}">
+                    <label th:for="${'status_' + dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库存数：</label>
+            <div class="col-sm-8">
+                <input name="stockNum" th:field="*{stockNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">已售数：</label>
+            <div class="col-sm-8">
+                <input name="saleNum" th:field="*{saleNum}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上架时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <input name="putTime" th:value="${#dates.format(bookInfo.putTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <input id="pic" name="pic" class="form-control" type="hidden" >
+        <div class="ibox-content">
+            <div class="form-group">
+                <label class="font-noraml">选择图片上传</label>
+                <div class="file-loading">
+                    <input id="singleFile" name="file" type="file">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: bootstrap-fileinput-js" />
+<script th:inline="javascript">
+    var prefix = ctx + "shop/info";
+    $("#form-info-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-info-edit').serialize());
+        }
+    }
+
+    $("input[name='putTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    $(document).ready(function () {
+        // 单图上传
+        $("#singleFile").fileinput({
+            uploadUrl: ctx + 'common/upload',
+            maxFileCount: 1,
+            autoReplace: true
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            var rsp = data.response;
+            $("#pic").val(rsp.fileName);
+        }).on('fileremoved', function (event, id, index) {
+            $("input[name='" + event.currentTarget.id + "']").val('')
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('统计分析')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div id="main_vis" style="width: 100%;height:500px;"></div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<script th:inline="javascript">
+    $(function() {
+        let bookInfo = [[${bookInfo}]]
+        console.log(bookInfo)
+        let x = [],y=[]
+        bookInfo.forEach(v => {
+            x.push(v.label)
+            y.push(v.num)
+        })
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main_vis'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '书籍销售情况',
+                x: "center"
+            },
+            tooltip: {},
+
+            xAxis: {
+                data: x,
+                name: "类型"
+            },
+            yAxis: {},
+            series: [{
+                type: 'bar',
+                data: y
+            }
+            ]
+
+        };
+
+        // <!--    // 使用刚指定的配置项和数据显示图表。-->
+        myChart.setOption(option);
+    })
+
+</script>
+</body>
+</html>

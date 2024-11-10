@@ -1,0 +1,242 @@
+/* <!-- 固定右定位 --> */
+.A1{
+	position: fixed;
+	right: 0;
+	top: 400px;
+	background-color: #FAFAFA;
+	text-align: center;
+}
+.A1 li{
+	width: 84.67px;
+	height: 92.67px;
+}
+/* 通用导航 */
+.e1{
+	height: 40px;
+	background-color: #333333;
+}
+.e0{
+	width: 1226px;
+	overflow: hidden;
+}
+.e2 li{
+	float: left;
+	line-height: 40px;
+	padding: 0 5px;
+}
+.e2 p{
+	float: right;
+	color: #999999;
+	line-height: 39px;
+	padding: 0 5px;
+}
+.e2 a{
+	color: #999999;
+	font-size: 12px;
+}
+.e10{
+	background-color: #424242;
+}
+.e3 li{
+	float:left;
+	padding: 10px 0 10px;
+	margin-top: 22px;
+	line-height: 55px;
+	margin-right: 20px;
+}
+.e3 p{
+	float:right;
+	padding: 10px 0 10px;
+	margin-top: 22px;
+	line-height: 55px;
+	margin-right: 20px;
+}
+.e4{
+	width: 245px;
+	height: 50px;
+}
+.e5{
+	width: 54px;
+	height: 54px;
+}
+.e6{
+	height: 63px;
+	line-height: 63px;
+}
+.e7{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	height: 63px;
+	background-color: white;
+}
+/* 吸附样式 */
+.xifu{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 222;
+	width: 100%;
+}
+.e8{
+	width: 1226px;
+	height: 400px;
+	margin: 32px auto 12px;
+	overflow: hidden;
+}
+.e9{
+	width: 606px;
+	height: 755px;
+	/* background-color: #2D9B01; */
+}
+.f1{
+	width: 600px;
+	height: 755px;
+}
+.f2{
+	font-size: 24px;
+
+}
+.f3{
+	font-size: 14px;
+	padding-top: 8px;
+	color: #B0B0B0;
+}
+.f4{
+	color: #FF4a00;
+}
+.f5{
+	font-size: 14px;
+	color: #B0B0B0;
+	text-decoration:line-through
+}
+.f6{
+	width: 480px;
+	padding: 30px 50px;
+	border: 1px solid #B0B0B0;
+	background-color: #fafafa;
+}
+.f7{
+	color: #ff6700;
+	border: 1px solid #ff6700;
+	padding: 5px 10px;
+	width: 292px;
+	height: 41px;
+	line-height: 41px;
+}
+.f8{
+	overflow: hidden;
+	border: 0;
+}
+.f9{
+	width: 300px;
+	height: 54px;
+	line-height:54px ;
+	background-color: #ff6900;
+	color: #FFFFFF;
+	border: 0;
+}
+.l1{
+	width: 180px;
+	height: 54px;
+	line-height:54px ;
+	background-color: #ff6900;
+	color: #FFFFFF;
+	border: 0;
+}
+.l2 li{
+	float: left;
+	padding: 0 56px;
+}
+.l2{
+	width: 510px;
+	margin: 0 auto;
+	overflow: hidden;
+	height: 58px;
+	line-height: 58px;
+}
+/* 通用底部 */
+.B0{
+	width: 1226px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.B-1{
+	background-color: #FAFAFA;
+}
+.B1 li{
+	float: left;
+	width: 244px;
+	height: 80px;
+	line-height: 80px;
+	text-align: center;
+	border-bottom: 1px solid black;
+}
+.B2{
+	margin: 40px 100px 40px 0;
+}
+.B3{
+	margin: 40px 0 40px ;
+	text-align: center;
+}
+.B2 li{
+	padding-bottom: 10px;
+}
+.B4{
+	padding: 6px 8px;
+	border: 1px solid orange;
+}
+.B5{
+	margin-left: 30px;
+}
+/* 轮播图css */
+#xiyiji{
+	width: 560px;
+	height: 560px;
+	overflow: hidden;
+	position: relative;
+}
+.xiyiji1{
+	width: 1680px;
+	/* left: -560px; */
+	overflow: hidden;
+	position: relative;
+}
+.xiyiji1 li{
+	float: left;
+}
+.zuojian,.youjian{
+	position: absolute;
+	top: 50%;
+	color: #B0B0B0;
+	font-size: 32px;
+}
+.zuojian{
+	left: 10px;
+}
+.youjian{
+	right: 10px;
+}
+.diandian{
+	position: absolute;
+	left: 35%;
+	bottom:20px;
+	height: 5px;
+	width: 200px;
+	/* margin-right: -100px; */
+	/* padding-right: 200px; */
+}
+.diandian span{
+	width: 50px;
+	height: 3px;
+	background-color: #333333;
+	display: inline-block;
+}
+.diandian span.on{
+	background-color: #B0B0B0;
+}
+.z1{
+	display: none;
+}
+.z2{
+	display: none;
+}

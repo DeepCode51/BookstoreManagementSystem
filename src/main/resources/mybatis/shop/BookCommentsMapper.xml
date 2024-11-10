@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.project.shop.comments.mapper.BookCommentsMapper">
+    
+    <resultMap type="BookComments" id="BookCommentsResult">
+        <result property="id"    column="id"    />
+        <result property="content"    column="content"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="star"    column="star"    />
+        <result property="name"    column="name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBookCommentsVo">
+        select id, content, book_id, user_id, user_name, star, name, create_time from book_comments
+    </sql>
+
+    <select id="selectBookCommentsList" parameterType="BookComments" resultMap="BookCommentsResult">
+        <include refid="selectBookCommentsVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="star != null "> and star = #{star}</if>
+            <if test="name != null and name != ''" > and name = #{name}</if>
+        </where>
+    </select>
+    
+    <select id="selectBookCommentsById" parameterType="Long" resultMap="BookCommentsResult">
+        <include refid="selectBookCommentsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBookComments" parameterType="BookComments" useGeneratedKeys="true" keyProperty="id">
+        insert into book_comments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">content,</if>
+            <if test="bookId != null">book_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="star != null">star,</if>
+            <if test="name != null">name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="content != null">#{content},</if>
+            <if test="bookId != null">#{bookId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="star != null">#{star},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBookComments" parameterType="BookComments">
+        update book_comments
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null">content = #{content},</if>
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="star != null">star = #{star},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBookCommentsById" parameterType="Long">
+        delete from book_comments where id = #{id}
+    </delete>
+
+    <delete id="deleteBookCommentsByIds" parameterType="String">
+        delete from book_comments where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

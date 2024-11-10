@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.project.shop.info.mapper.BookInfoMapper">
+
+    <resultMap type="BookInfo" id="BookInfoResult">
+        <result property="id"    column="id"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="author"    column="author"    />
+        <result property="bookType"    column="book_type"    />
+        <result property="price"    column="price"    />
+        <result property="publishingCode"    column="publishing_code"    />
+        <result property="pic"    column="pic"    />
+        <result property="stockNum"    column="stock_num"    />
+        <result property="saleNum"    column="sale_num"    />
+        <result property="putTime"    column="put_time"    />
+        <result property="putUser"    column="put_user"    />
+        <result property="status"    column="status"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBookInfoVo">
+        select id, book_name, author, book_type, price, publishing_code, pic, stock_num, sale_num, status, put_time, put_user, introduce, update_time from book_info
+    </sql>
+
+    <select id="selectBookInfoList" parameterType="BookInfo" resultMap="BookInfoResult">
+        <include refid="selectBookInfoVo"/>
+        <where>
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="author != null  and author != ''"> and author = #{author}</if>
+            <if test="bookType != null "> and book_type = #{bookType}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="publishingCode != null  and publishingCode != ''"> and publishing_code = #{publishingCode}</if>
+            <if test="pic != null  and pic != ''"> and pic = #{pic}</if>
+            <if test="stockNum != null "> and stock_num = #{stockNum}</if>
+            <if test="saleNum != null "> and sale_num = #{saleNum}</if>
+            <if test="putTime != null "> and put_time = #{putTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="introduce != null "> and introduce = #{introduce}</if>
+            <if test="putUser != null  and putUser != ''"> and put_user = #{putUser}</if>
+        </where>
+    </select>
+
+    <select id="selectBookInfoById" parameterType="Long" resultMap="BookInfoResult">
+        <include refid="selectBookInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBookInfo" parameterType="BookInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into book_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookName != null">book_name,</if>
+            <if test="author != null">author,</if>
+            <if test="bookType != null">book_type,</if>
+            <if test="price != null">price,</if>
+            <if test="publishingCode != null">publishing_code,</if>
+            <if test="pic != null">pic,</if>
+            <if test="stockNum != null">stock_num,</if>
+            <if test="saleNum != null">sale_num,</if>
+            <if test="putTime != null">put_time,</if>
+            <if test="putUser != null">put_user,</if>
+            <if test="status != null">status,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookName != null">#{bookName},</if>
+            <if test="author != null">#{author},</if>
+            <if test="bookType != null">#{bookType},</if>
+            <if test="price != null">#{price},</if>
+            <if test="publishingCode != null">#{publishingCode},</if>
+            <if test="pic != null">#{pic},</if>
+            <if test="stockNum != null">#{stockNum},</if>
+            <if test="saleNum != null">#{saleNum},</if>
+            <if test="putTime != null">#{putTime},</if>
+            <if test="putUser != null">#{putUser},</if>
+            <if test="status != null">#{status},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBookInfo" parameterType="BookInfo">
+        update book_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookName != null">book_name = #{bookName},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="bookType != null">book_type = #{bookType},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="publishingCode != null">publishing_code = #{publishingCode},</if>
+            <if test="pic != null">pic = #{pic},</if>
+            <if test="stockNum != null">stock_num = #{stockNum},</if>
+            <if test="saleNum != null">sale_num = #{saleNum},</if>
+            <if test="putTime != null">put_time = #{putTime},</if>
+            <if test="putUser != null">put_user = #{putUser},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBookInfoById" parameterType="Long">
+        delete from book_info where id = #{id}
+    </delete>
+
+    <delete id="deleteBookInfoByIds" parameterType="String">
+        delete from book_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 查询列表 -->
+    <select id="charts" resultType="java.util.HashMap">
+        select sum(a.sale_num) num, c.dict_label label from book_order a
+        left join book_info b on a.book_id = b.id
+        left join sys_dict_data c on b.book_type = c.dict_value
+        where c.dict_type = 'shop_book_type'
+        GROUP BY c.dict_value
+    </select>
+</mapper>

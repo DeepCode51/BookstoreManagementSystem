@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.project.shop.order.mapper.BookOrderMapper">
+
+    <resultMap type="BookOrder" id="BookOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="state"    column="state"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="bookType"    column="book_type"    />
+        <result property="buyerId"    column="buyer_id"    />
+        <result property="buyer"    column="buyer"    />
+        <result property="saleTime"    column="sale_time"    />
+        <result property="saleNum"    column="sale_num"    />
+        <result property="salePrice"    column="sale_price"    />
+    </resultMap>
+
+    <sql id="selectBookOrderVo">
+        select id, order_no, `state`, book_id, book_name, book_type, buyer_id, buyer, sale_time, sale_num, sale_price, remark from book_order a inner join sys_user b on a.buyer_id = b.user_id
+    </sql>
+
+    <select id="selectBookOrderList" parameterType="BookOrder" resultMap="BookOrderResult">
+        <include refid="selectBookOrderVo"/>
+        <where>
+            <if test="orderNo != null and orderNo != ''"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="bookType != null "> and book_type = #{bookType}</if>
+            <if test="buyerId != null "> and buyer_id = #{buyerId}</if>
+            <if test="buyer != null  and buyer != ''"> and buyer = #{buyer}</if>
+            <if test="saleTime != null "> and sale_time = #{saleTime}</if>
+            <if test="saleNum != null "> and sale_num = #{saleNum}</if>
+            <if test="salePrice != null  and salePrice != ''"> and sale_price = #{salePrice}</if>
+        </where>
+    </select>
+
+    <select id="selectBookOrderById" parameterType="Long" resultMap="BookOrderResult">
+        <include refid="selectBookOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBookOrder" parameterType="BookOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into book_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">order_no,</if>
+            <if test="state != null">`state`,</if>
+            <if test="bookId != null">book_id,</if>
+            <if test="bookName != null">book_name,</if>
+            <if test="bookType != null">book_type,</if>
+            <if test="buyerId != null">buyer_id,</if>
+            <if test="buyer != null">buyer,</if>
+            <if test="saleTime != null">sale_time,</if>
+            <if test="saleNum != null">sale_num,</if>
+            <if test="salePrice != null">sale_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="state != null">#{state},</if>
+            <if test="bookId != null">#{bookId},</if>
+            <if test="bookName != null">#{bookName},</if>
+            <if test="bookType != null">#{bookType},</if>
+            <if test="buyerId != null">#{buyerId},</if>
+            <if test="buyer != null">#{buyer},</if>
+            <if test="saleTime != null">#{saleTime},</if>
+            <if test="saleNum != null">#{saleNum},</if>
+            <if test="salePrice != null">#{salePrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBookOrder" parameterType="BookOrder">
+        update book_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="state != null">`state` = #{state},</if>
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="bookName != null">book_name = #{bookName},</if>
+            <if test="bookType != null">book_type = #{bookType},</if>
+            <if test="buyerId != null">buyer_id = #{buyerId},</if>
+            <if test="buyer != null">buyer = #{buyer},</if>
+            <if test="saleTime != null">sale_time = #{saleTime},</if>
+            <if test="saleNum != null">sale_num = #{saleNum},</if>
+            <if test="salePrice != null">sale_price = #{salePrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBookOrderById" parameterType="Long">
+        delete from book_order where id = #{id}
+    </delete>
+
+    <delete id="deleteBookOrderByIds" parameterType="String">
+        delete from book_order where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

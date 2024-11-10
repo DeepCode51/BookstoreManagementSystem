@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改轮播图')" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-pic-edit" th:object="${bookPic}">
+            <input name="id" th:field="*{id}" type="hidden">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">图片标题：</label>
+                <div class="col-sm-8">
+                    <input name="title" th:field="*{title}" class="form-control" type="text">
+                </div>
+            </div>
+
+            <input id="picAdress" name="picAdress" class="form-control" type="hidden" >
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="font-noraml">选择图片上传</label>
+                    <div class="file-loading">
+                        <input id="singleFile" name="file" type="file">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "shop/pic";
+        $("#form-pic-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-pic-edit').serialize());
+            }
+        }
+
+        $(document).ready(function () {
+            // 单图上传
+            $("#singleFile").fileinput({
+                uploadUrl: ctx + 'common/upload',
+                maxFileCount: 1,
+                autoReplace: true
+            }).on('fileuploaded', function (event, data, previewId, index) {
+                var rsp = data.response;
+                $("#picAdress").val(rsp.fileName);
+            }).on('fileremoved', function (event, id, index) {
+                $("input[name='" + event.currentTarget.id + "']").val('')
+            })
+        });
+    </script>
+</body>
+</html>

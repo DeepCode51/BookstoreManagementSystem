@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.project.shop.pic.mapper.BookPicMapper">
+    
+    <resultMap type="BookPic" id="BookPicResult">
+        <result property="id"    column="id"    />
+        <result property="picAdress"    column="pic_adress"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBookPicVo">
+        select id, pic_adress, create_time, title,type from book_pic
+    </sql>
+
+    <select id="selectBookPicList" parameterType="BookPic" resultMap="BookPicResult">
+        <include refid="selectBookPicVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectBookPicById" parameterType="Long" resultMap="BookPicResult">
+        <include refid="selectBookPicVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBookPic" parameterType="BookPic" useGeneratedKeys="true" keyProperty="id">
+        insert into book_pic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="picAdress != null">pic_adress,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="title != null">title,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="picAdress != null">#{picAdress},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="title != null">#{title},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBookPic" parameterType="BookPic">
+        update book_pic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="picAdress != null">pic_adress = #{picAdress},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="title != null">title = #{title},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBookPicById" parameterType="Long">
+        delete from book_pic where id = #{id}
+    </delete>
+
+    <delete id="deleteBookPicByIds" parameterType="String">
+        delete from book_pic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
